@@ -10,8 +10,15 @@ class Blog(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
+# class Comment(db.Model):
+#     id = db.Column(db.Integer, primary_keys=True)
+#     comment = db.Column(db.String(5000))
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
+    blogs = db.relationship('Blog')
