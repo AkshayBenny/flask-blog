@@ -10,17 +10,20 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
+    blogs = Blog.query.all()
     if request.method == 'POST':
         blog = request.form.get('blog')
+        blog_title = request.form.get('title')
         if len(blog) < 1:
             flash('Blog too short', category='error')
         else:
-            new_blog = Blog(data=blog, user_id=current_user.id)
+            new_blog = Blog(data=blog, title=blog_title,
+                            user_id=current_user.id)
             db.session.add(new_blog)
             db.session.commit()
             flash('Blog added', category="success")
 
-    return render_template("home.html", user=current_user)
+    return render_template("home.html", user=current_user, blogs=blogs)
 
 
 @views.route('/delete-blog', methods=['POST'])

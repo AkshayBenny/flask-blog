@@ -1,23 +1,19 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
-<h1 align="center">Blogs</h1>
-<ul
-	class="list-group list-group-flush"
-	id="blogs">
-	{% for blog in user.blogs %}
-	<li class="list-group-item">
-		{{blog.data}}
-		<button
-			type="button"
-			class="close"
-			onClick="deleteBlog({{ blog.id }})">
-			<span aria-hidden="true">&times;</span>
-		</button>
-	</li>
-	{% endfor %}
-</ul>
+<h1
+	align="center"
+	class="mt-4">
+	Blogs
+</h1>
+
 <form method="POST">
+	<input
+		type="text"
+		placeholder="Enter the title"
+		name="title"
+		id="title" />
 	<textarea
+		placeholder="Type the blog here..."
 		name="blog"
 		id="blog"
 		class="form-control"></textarea>
@@ -72,4 +68,22 @@
 	</script>
     -->
 </form>
+<ul
+	class="list-group list-group-flush"
+	id="blogs">
+	{% for blog in blogs %}
+	<li class="list-group-item">
+		<p class="font-weight-bold mb-4 mt-3">{{blog.title}}</p>
+		{{blog.data}}
+		<p class="font-italic text-right">-- by {{user.first_name}}</p>
+		<button
+			type="button"
+			class="close"
+			onClick="deleteBlog({{ blog.id }})">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</li>
+	{% endfor %}
+</ul>
+
 {% endblock %}

@@ -5,6 +5,7 @@ from sqlalchemy.sql import func
 
 class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(500))
     data = db.Column(db.String(100000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
