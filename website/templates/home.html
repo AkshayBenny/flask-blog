@@ -1,6 +1,67 @@
-{% extends "base.html" %}
-{% block title %}Home{% endblock %}
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+%}
+<h1 align="center">Blogs</h1>
+<ul
+	class="list-group list-group-flush"
+	id="blogs">
+	{% for blog in user.blogs %}
+	<li class="list-group-item">{{blog.data}}</li>
+	{% endfor %}
+</ul>
+<form method="POST">
+	<textarea
+		name="blog"
+		id="blog"
+		class="form-control"></textarea>
+	<br />
+	<div align="center">
+		<button
+			type="submit"
+			class="btn btn-primary">
+			Submit
+		</button>
+	</div>
+	<!--
+    <div id="toolbar">
+		<button class="ql-bold">Bold</button>
+		<button class="ql-italic">Italic</button>
+		<button class="ql-underline">Underline</button>
+		<button class="ql-strike">Strike</button>
+		<button class="ql-blockquote">Quote</button>
+		<button
+			class="ql-list"
+			value="ordered">
+			Ordered List
+		</button>
+		<button
+			class="ql-list"
+			value="bullet">
+			Bullet List
+		</button>
+		<select class="ql-align">
+			<option selected></option>
+			<option value="center"></option>
+			<option value="right"></option>
+			<option value="justify"></option>
+		</select>
+		<select class="ql-color"></select>
+		<select class="ql-background"></select>
+	</div>
 
-{% block content %}
-<h1>This is the home page</h1>
+	<div id="editor">
+		<p>Hello World!</p>
+	</div>
+
+	<button class="btn btn-success">Create blog</button>
+
+	<script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
+
+	<script>
+		var editor = new Quill('#editor', {
+			modules: { toolbar: '#toolbar' },
+			theme: 'snow',
+		})
+	</script>
+    -->
+</form>
 {% endblock %}
