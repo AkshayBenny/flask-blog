@@ -5,7 +5,15 @@
 	class="list-group list-group-flush"
 	id="blogs">
 	{% for blog in user.blogs %}
-	<li class="list-group-item">{{blog.data}}</li>
+	<li class="list-group-item">
+		{{blog.data}}
+		<button
+			type="button"
+			class="close"
+			onClick="deleteBlog({{ blog.id }})">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</li>
 	{% endfor %}
 </ul>
 <form method="POST">
