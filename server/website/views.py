@@ -8,7 +8,6 @@ views = Blueprint('views', __name__)
 
 
 @views.route('/', methods=['GET', 'POST'])
-@login_required
 def home():
     blogs = Blog.query.all()
     if request.method == 'POST':
@@ -22,8 +21,9 @@ def home():
             db.session.add(new_blog)
             db.session.commit()
             flash('Blog added', category="success")
-
-    return render_template("home.html", user=current_user, blogs=blogs)
+    blogs_list = [blog.to_dict() for blog in blogs]
+    return jsonify({'blogs': blogs_list})
+    # return render_template("home.html", user=current_user, blogs=blogs)
 
 
 @views.route('/delete-blog', methods=['POST'])
