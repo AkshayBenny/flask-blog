@@ -25,6 +25,14 @@ def home():
     return jsonify({'blogs': blogs_list})
     # return render_template("home.html", user=current_user, blogs=blogs)
 
+@views.route('/<int:blog_id>', methods=['GET'])
+def get_blog_by_id(blog_id):
+    blog = Blog.query.get(blog_id)
+
+    if not blog:
+        return jsonify({'message': 'Blog not found'})
+
+    return jsonify({'data': blog.to_dict()})
 
 @views.route('/delete-blog', methods=['POST'])
 @login_required
