@@ -1,6 +1,7 @@
 'use client'
 
 import axios from 'axios'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 export default function Home() {
@@ -18,15 +19,25 @@ export default function Home() {
 		fetchBlogs()
 	}, [blogs])
 	return (
-		<div className='space-y-[24px]'>
+		<main className='space-y-[24px] m-12'>
+			<h2 className='font-semibold text-xl'>Blogs</h2>
 			{blogs &&
 				blogs.map((blog: any) => {
 					return (
-						<div key={blog.id}>
-							<p>{blog.data}</p>
+						<div
+							key={blog.id}
+							className='border border-black rounded px-6 py-2 group'>
+							<Link
+								href={'/' + blog.id}
+								className='w-full'>
+								<p className='group-hover:cursor-pointer group-hover:underline transition font-medium text-blue-500'>
+									{blog.title}
+								</p>
+								<p className='truncate'>{blog.data}</p>
+							</Link>
 						</div>
 					)
 				})}
-		</div>
+		</main>
 	)
 }

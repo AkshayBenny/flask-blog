@@ -9,6 +9,7 @@ class Blog(db.Model):
     data = db.Column(db.String(100000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # user = db.relationship('User', backref='blogs')
 
     def to_dict(self):
         return {
