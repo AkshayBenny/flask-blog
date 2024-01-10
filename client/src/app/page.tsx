@@ -21,23 +21,25 @@ export default function Home() {
 	return (
 		<main className='space-y-[24px] m-12'>
 			<h2 className='font-semibold text-xl'>Blogs</h2>
-			{blogs &&
-				blogs.map((blog: any) => {
-					return (
-						<div
-							key={blog.id}
-							className='border border-black rounded px-6 py-2 group'>
-							<Link
-								href={'/' + blog.id}
-								className='w-full'>
-								<p className='group-hover:cursor-pointer group-hover:underline transition font-medium text-blue-500'>
-									{blog.title}
-								</p>
-								<p className='truncate'>{blog.data}</p>
-							</Link>
-						</div>
-					)
-				})}
+			<div className='grid grid-cols-2 gap-3'>
+				{blogs &&
+					blogs.map((blog: any) => {
+						return (
+							<div
+								key={blog.id}
+								className='border border-black rounded px-6 py-2 group'>
+								<Link
+									href={`/${blog.id}`}
+									className='w-full'>
+									<p className='group-hover:cursor-pointer group-hover:underline transition font-medium text-blue-500'>
+										{blog.title}
+									</p>
+									<p className='truncate'>{blog.data}</p>
+								</Link>
+							</div>
+						)
+					})}
+			</div>
 		</main>
 	)
 }
