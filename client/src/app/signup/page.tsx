@@ -6,17 +6,34 @@ import { useState } from 'react'
 interface UserData {
 	name: string
 	email: string
-	password: string
+	password1: string
+	password2: string
 }
 
 export default function SignUpPage() {
 	const [user, setUser] = useState<UserData | null>(null)
-	
-	const handleSubmit = async() => {
+
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
 		try {
-			const {data} = await axios.post('http://127.0.0.1:5000/v2/token', )
-		} catch (error) {
-			
+			const { data } = await axios.post(
+				'http://127.0.0.1:5000/v2/token',
+				{
+					email: user?.email,
+					name: user?.name,
+					password1: user?.password1,
+					password2: user?.password2,
+				},
+				{
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
+				}
+			)
+			console.log(data)
+		} catch (error: any) {
+			console.log(error.message)
 		}
 	}
 	return (
@@ -25,7 +42,9 @@ export default function SignUpPage() {
 				<h1 className='text-3xl font-semibold text-center text-purple-700'>
 					Create a new account
 				</h1>
-				<form onSubmit={handleSubmit} className='space-y-4'>
+				<form
+					onSubmit={handleSubmit}
+					className='space-y-4'>
 					<div>
 						<label className='label'>
 							<span className='text-base label-text'>Name</span>
@@ -38,7 +57,11 @@ export default function SignUpPage() {
 								e: React.ChangeEvent<HTMLInputElement>
 							) =>
 								setUser((prev) => ({
-									...(prev ?? { email: '', password: '' }),
+									...(prev ?? {
+										email: '',
+										password1: '',
+										password2: '',
+									}),
 									name: e.target.value,
 								}))
 							}
@@ -56,7 +79,11 @@ export default function SignUpPage() {
 								e: React.ChangeEvent<HTMLInputElement>
 							) =>
 								setUser((prev) => ({
-									...(prev ?? { name: '', password: '' }),
+									...(prev ?? {
+										name: '',
+										password1: '',
+										password2: '',
+									}),
 									email: e.target.value,
 								}))
 							}
@@ -72,6 +99,18 @@ export default function SignUpPage() {
 							type='password'
 							placeholder='Enter Password'
 							className='w-full input input-bordered input-primary'
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) =>
+								setUser((prev) => ({
+									...(prev ?? {
+										name: '',
+										email: '',
+										password2: '',
+									}),
+									password1: e.target.value,
+								}))
+							}
 						/>
 					</div>
 					<div>
@@ -84,10 +123,24 @@ export default function SignUpPage() {
 							type='password'
 							placeholder='Confirm Password'
 							className='w-full input input-bordered input-primary'
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) =>
+								setUser((prev) => ({
+									...(prev ?? {
+										name: '',
+										email: '',
+										password1: '',
+									}),
+									password2: e.target.value,
+								}))
+							}
 						/>
 					</div>
 					<div>
-						<button className='btn btn-block btn-primary'>
+						<button
+							type='submit'
+							className='btn btn-block btn-primary'>
 							Sign Up
 						</button>
 					</div>
