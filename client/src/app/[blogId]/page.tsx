@@ -34,9 +34,9 @@ export default function BlogPage({ params }: { params: { blogId: string } }) {
 
 	return (
 		<main className='m-12'>
-			<div className='flex items-center justify-start gap-12 mb-6'>
-				<h2 className='font-bold'>{blog?.title}</h2>
-				<h2 className='font-thin italic text-sm'>By JRR Tolkien</h2>
+			<div className='flex items-center justify-start gap-2 mb-6'>
+				<h2 className='font-bold'>{blog?.title},</h2>
+				<p className='font-normal italic text-sm'>by JRR Tolkien</p>
 			</div>
 			<p className='text-sm leading-6'>{blog?.data}</p>
 		</main>
