@@ -1,5 +1,5 @@
 from website import create_app
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
 if __name__ == "__main__":
     app = create_app()
