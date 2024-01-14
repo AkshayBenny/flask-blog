@@ -21,6 +21,7 @@ export default function BlogPage({ params }: { params: { blogId: string } }) {
 					`http://127.0.0.1:5000/${params.blogId}`
 				)
 				setBlog(data.data)
+				console.log('blogData>>>', data.data)
 			} catch (error: any) {
 				console.log(error.message)
 			}

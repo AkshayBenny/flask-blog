@@ -17,7 +17,7 @@ export default function Home() {
 			}
 		}
 		fetchBlogs()
-	}, [blogs])
+	}, [])
 	return (
 		<main className='space-y-[24px] m-12'>
 			<h2 className='font-semibold text-xl'>Blogs</h2>

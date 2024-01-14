@@ -8,30 +8,23 @@ import { useState } from 'react'
 import { useRecoilState } from 'recoil'
 
 interface UserData {
-	name: string
 	email: string
-	password1: string
-	password2: string
+	password: string
 }
 
-export default function SignUpPage() {
+export default function LoginPage() {
 	const [user, setUser] = useState<UserData | null>(null)
 	const [recoilUser, setRecoilUser] = useRecoilState(userAtom)
-	const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		if (user?.password1 !== user?.password2)
-			setErrorMessage('Passwords do not match')
 
 		try {
 			const { data } = await axios.post(
-				'http://127.0.0.1:5000/auth/sign_up',
+				'http://127.0.0.1:5000/auth/token',
 				{
 					email: user?.email,
-					name: user?.name,
-					password1: user?.password1,
-					password2: user?.password2,
+					password: user?.password,
 				},
 				{
 					headers: {
@@ -44,7 +37,7 @@ export default function SignUpPage() {
 				sessionStorage.setItem('token', `${data.access_token}`)
 				localStorage.setItem('token', `${data.access_token}`)
 				setRecoilUser({
-					name: user?.name || '',
+					name: '',
 					email: user?.email || '',
 					token: data.access_token,
 				})
@@ -52,40 +45,18 @@ export default function SignUpPage() {
 			}
 		} catch (error: any) {
 			console.log(error.message)
-			redirect('/signup')
+			redirect('/login')
 		}
 	}
 	return (
 		<div className='relative flex flex-col justify-center h-screen overflow-hidden'>
 			<div className='w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl'>
 				<h1 className='text-3xl font-semibold text-center text-purple-700'>
-					Create a new account
+					Login
 				</h1>
 				<form
 					onSubmit={handleSubmit}
 					className='space-y-4'>
-					<div>
-						<label className='label'>
-							<span className='text-base label-text'>Name</span>
-						</label>
-						<input
-							type='text'
-							placeholder='Name'
-							className='w-full input input-bordered input-primary'
-							onChange={(
-								e: React.ChangeEvent<HTMLInputElement>
-							) =>
-								setUser((prev) => ({
-									...(prev ?? {
-										email: '',
-										password1: '',
-										password2: '',
-									}),
-									name: e.target.value,
-								}))
-							}
-						/>
-					</div>
 					<div>
 						<label className='label'>
 							<span className='text-base label-text'>Email</span>
@@ -99,9 +70,7 @@ export default function SignUpPage() {
 							) =>
 								setUser((prev) => ({
 									...(prev ?? {
-										name: '',
-										password1: '',
-										password2: '',
+										password: '',
 									}),
 									email: e.target.value,
 								}))
@@ -123,73 +92,27 @@ export default function SignUpPage() {
 							) => {
 								setUser((prev) => ({
 									...(prev ?? {
-										name: '',
 										email: '',
-										password2: '',
 									}),
-									password1: e.target.value,
+									password: e.target.value,
 								}))
-								setErrorMessage(null)
 							}}
 						/>
 					</div>
-					<div>
-						<label className='label'>
-							<span className='text-base label-text'>
-								Confirm Password
-							</span>
-						</label>
-						<input
-							type='password'
-							placeholder='Confirm Password'
-							className='w-full input input-bordered input-primary'
-							onChange={(
-								e: React.ChangeEvent<HTMLInputElement>
-							) => {
-								setUser((prev) => ({
-									...(prev ?? {
-										name: '',
-										email: '',
-										password1: '',
-									}),
-									password2: e.target.value,
-								}))
-								setErrorMessage(null)
-							}}
-						/>
-					</div>
-					{errorMessage && (
-						<div
-							role='alert'
-							className='alert alert-error'>
-							<svg
-								xmlns='http://www.w3.org/2000/svg'
-								className='stroke-current shrink-0 h-6 w-6'
-								fill='none'
-								viewBox='0 0 24 24'>
-								<path
-									strokeLinecap='round'
-									strokeLinejoin='round'
-									strokeWidth='2'
-									d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
-								/>
-							</svg>
-							<span>{errorMessage}</span>
-						</div>
-					)}
+
 					<div>
 						<button
 							type='submit'
 							className='btn btn-block btn-primary'>
-							Sign Up
+							Login
 						</button>
 					</div>
 					<span>
-						Already have an account ?
+						Dont have an account ?
 						<Link
-							href='login'
+							href='/signup'
 							className='text-blue-600 hover:text-blue-800 hover:underline'>
-							Login
+							Sign up
 						</Link>
 					</span>
 				</form>
