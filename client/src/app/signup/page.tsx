@@ -52,7 +52,7 @@ export default function SignUpPage() {
 			}
 		} catch (error: any) {
 			console.log(error.message)
-			redirect('/signup')
+			// redirect('/signup')
 		}
 	}
 	return (

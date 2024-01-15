@@ -18,7 +18,6 @@ export default function LoginPage() {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-
 		try {
 			const { data } = await axios.post(
 				'http://127.0.0.1:5000/auth/token',
@@ -36,16 +35,17 @@ export default function LoginPage() {
 			if (data && data.access_token) {
 				sessionStorage.setItem('token', `${data.access_token}`)
 				localStorage.setItem('token', `${data.access_token}`)
+				sessionStorage.setItem('email', `${user?.email || ''}`)
+				localStorage.setItem('email', `${user?.email || ''}`)
 				setRecoilUser({
 					name: '',
 					email: user?.email || '',
 					token: data.access_token,
 				})
-				redirect('/')
+				console.log(user?.email, data.access_token)
 			}
 		} catch (error: any) {
 			console.log(error.message)
-			redirect('/login')
 		}
 	}
 	return (

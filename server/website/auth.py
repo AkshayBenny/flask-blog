@@ -41,23 +41,14 @@ def logout():
 def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    if email != "test" or password != "test":
-        return {"msg": "Wrong email or password"}, 401
+    user = User.query.filter_by(email=email).first()
+    if user:
+        if not check_password_hash(user.password, password):
+            return {"msg": "Wrong email or password"}, 401
 
-    access_token = create_access_token(identity=email)
-    response = {"access_token": access_token}
-    return response
-    # email = request.json.get("email", None)
-    # password = request.json.get("password", None)
-
-    # user = User.query.filter_by(email=email).first()
-    # if user:
-    #     if not check_password_hash(user.password, password):
-    #         return {"msg": "Wrong email or password"}, 401
-
-    #     access_token = create_access_token(identity=email)
-    #     response = {"access_token": access_token}
-    #     return response
+        access_token = create_access_token(identity=email)
+        response = {"access_token": access_token}
+        return response
 
 
 @auth.route('/profile')

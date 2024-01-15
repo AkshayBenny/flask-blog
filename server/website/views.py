@@ -1,29 +1,41 @@
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, request, flash, jsonify
 from flask_login import login_required, current_user
-from .models import Blog
+from .models import Blog, User
 from . import db
 import json
+from flask_jwt_extended import jwt_required
 
 views = Blueprint('views', __name__)
 
 
 @views.route('/', methods=['GET', 'POST'])
+# @jwt_required()
 def home():
     blogs = Blog.query.all()
     if request.method == 'POST':
-        blog = request.form.get('blog')
-        blog_title = request.form.get('title')
+        blog = request.json.get('data', None)
+        blog_title = request.json.get('title', None)
+        user_email = request.json.get('email', None)
+
+        if not user_email | blog | blog_title:
+            return {"msg": "Provided data not enough."}
+
+        user = User.query.filter_by(email=user_email).first()
+
+        if not user:
+            return {"msg": "User not found in the database."}
+
         if len(blog) < 1:
             flash('Blog too short', category='error')
         else:
             new_blog = Blog(data=blog, title=blog_title,
-                            user_id=current_user.id)
+                            user_id=user.id)
             db.session.add(new_blog)
             db.session.commit()
             flash('Blog added', category="success")
     blogs_list = [blog.to_dict() for blog in blogs]
     return jsonify({'blogs': blogs_list})
-    # return render_template("home.html", user=current_user, blogs=blogs)
+
 
 @views.route('/<int:blog_id>', methods=['GET'])
 def get_blog_by_id(blog_id):
@@ -33,6 +45,7 @@ def get_blog_by_id(blog_id):
         return jsonify({'message': 'Blog not found'})
 
     return jsonify({'data': blog.to_dict()})
+
 
 @views.route('/delete-blog', methods=['POST'])
 @login_required
