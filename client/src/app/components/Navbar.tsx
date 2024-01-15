@@ -40,7 +40,10 @@ export default function Navbar() {
 		<nav className='w-full bg-blue-500 px-12 text-base flex items-center gap-6 py-4 text-white'>
 			<Link href='/'>Home</Link>
 			{recoilUser.token && (
-				<button onClick={logoutHandler}>Logout</button>
+				<>
+					<button onClick={logoutHandler}>Logout</button>
+					<Link href='/create-blog'>Create Blog</Link>
+				</>
 			)}
 			{!recoilUser.token && (
 				<>

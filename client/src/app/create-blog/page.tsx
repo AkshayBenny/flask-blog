@@ -24,6 +24,7 @@ export default function CreateBlogPage() {
 			date: String(new Date()),
 		}))
 		const userEmail = localStorage.getItem('email')
+		if (!userEmail) return console.log('No user email found.')
 		try {
 			const { data } = await axios.post(
 				'http://127.0.0.1:5000/',

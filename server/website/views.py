@@ -15,10 +15,10 @@ def home():
     if request.method == 'POST':
         blog = request.json.get('data', None)
         blog_title = request.json.get('title', None)
-        user_email = request.json.get('email', None)
+        user_email = request.json.get('user_email', None)
 
-        if not user_email | blog | blog_title:
-            return {"msg": "Provided data not enough."}
+        if not user_email or not blog or not blog_title:
+            return {"msg": "Provided data not enough.", "blog_data": blog, "blog_title": blog_title, "user_email": user_email}
 
         user = User.query.filter_by(email=user_email).first()
 
@@ -27,12 +27,14 @@ def home():
 
         if len(blog) < 1:
             flash('Blog too short', category='error')
+            print("Blog too short")
         else:
             new_blog = Blog(data=blog, title=blog_title,
                             user_id=user.id)
             db.session.add(new_blog)
             db.session.commit()
-            flash('Blog added', category="success")
+            # flash('Blog added', category="success")
+            print("Blog added")
     blogs_list = [blog.to_dict() for blog in blogs]
     return jsonify({'blogs': blogs_list})
 
