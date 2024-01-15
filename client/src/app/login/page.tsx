@@ -42,7 +42,6 @@ export default function LoginPage() {
 					email: user?.email || '',
 					token: data.access_token,
 				})
-				console.log(user?.email, data.access_token)
 			}
 		} catch (error: any) {
 			console.log(error.message)

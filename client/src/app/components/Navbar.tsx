@@ -41,8 +41,8 @@ export default function Navbar() {
 			<Link href='/'>Home</Link>
 			{recoilUser.token && (
 				<>
-					<button onClick={logoutHandler}>Logout</button>
 					<Link href='/create-blog'>Create Blog</Link>
+					<button onClick={logoutHandler}>Logout</button>
 				</>
 			)}
 			{!recoilUser.token && (

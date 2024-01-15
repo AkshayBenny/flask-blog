@@ -27,7 +27,7 @@ export default function CreateBlogPage() {
 		if (!userEmail) return console.log('No user email found.')
 		try {
 			const { data } = await axios.post(
-				'http://127.0.0.1:5000/',
+				'http://127.0.0.1:5000/create_blog',
 				{
 					data: blogData?.data || '',
 					title: blogData?.title || '',
@@ -49,14 +49,14 @@ export default function CreateBlogPage() {
 	return (
 		<form
 			onSubmit={handleSubmit}
-			className='space-y-4'>
+			className='space-y-4 px-12'>
 			<div>
 				<label className='label'>
 					<span className='text-base label-text'>Title</span>
 				</label>
 				<input
 					type='text'
-					placeholder='Name'
+					placeholder='Enter title'
 					className='w-full input input-bordered input-primary'
 					value={blogData?.title || ''}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -77,8 +77,9 @@ export default function CreateBlogPage() {
 					</span>
 				</label>
 				<textarea
-					placeholder='Name'
-					className='w-full input input-bordered input-primary'
+					placeholder='Type here...'
+					className='w-full input input-bordered input-primary py-2 h-full'
+					rows={10}
 					value={blogData?.data || ''}
 					onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
 						setBlogData((prev) => ({
