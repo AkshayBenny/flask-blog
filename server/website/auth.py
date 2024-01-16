@@ -1,13 +1,13 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, request, flash
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
-from flask_login import login_user, login_required, logout_user, current_user
 import json
-from flask import Flask, request, jsonify
+from flask import request, jsonify
 from datetime import datetime, timedelta, timezone
 from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, \
-    unset_jwt_cookies, jwt_required, JWTManager
+    unset_jwt_cookies, jwt_required
+from .limiter_setup import limiter
 
 
 auth = Blueprint('auth', __name__)
@@ -38,6 +38,7 @@ def logout():
 
 
 @auth.route('/token', methods=["POST"])
+@limiter.limit("10 per minute")
 def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
@@ -53,6 +54,7 @@ def create_token():
 
 @auth.route('/profile')
 @jwt_required()
+@limiter.limit("10 per minute")
 def my_profile():
     response_body = {
         "name": "Akshay",
@@ -63,6 +65,7 @@ def my_profile():
 
 
 @auth.route('/sign_up', methods=['GET', 'POST'])
+@limiter.limit("10 per minute")
 def sign_up():
     if request.method == 'POST':
         email = request.json.get('email')
