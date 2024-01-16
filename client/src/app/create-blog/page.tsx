@@ -2,6 +2,7 @@
 
 import { userAtom } from '@/state/recoil'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useRecoilState } from 'recoil'
 
@@ -14,6 +15,8 @@ interface BlogData {
 export default function CreateBlogPage() {
 	const [blogData, setBlogData] = useState<BlogData | null>(null)
 	const [recoilUser, setRecoilUser] = useRecoilState(userAtom)
+	const router = useRouter()
+
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		setBlogData((prev) => ({
@@ -41,7 +44,7 @@ export default function CreateBlogPage() {
 					},
 				}
 			)
-			console.log(data)
+			router.push('/')
 		} catch (error: any) {
 			console.log(error.message)
 		}
@@ -96,7 +99,7 @@ export default function CreateBlogPage() {
 				<button
 					type='submit'
 					className='btn btn-block btn-primary'>
-					Sign Up
+					Create
 				</button>
 			</div>
 		</form>

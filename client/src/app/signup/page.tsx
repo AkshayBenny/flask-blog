@@ -3,7 +3,7 @@
 import { userAtom } from '@/state/recoil'
 import axios from 'axios'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useRecoilState } from 'recoil'
 
@@ -18,6 +18,7 @@ export default function SignUpPage() {
 	const [user, setUser] = useState<UserData | null>(null)
 	const [recoilUser, setRecoilUser] = useRecoilState(userAtom)
 	const [errorMessage, setErrorMessage] = useState<string | null>(null)
+	const router = useRouter()
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -48,11 +49,10 @@ export default function SignUpPage() {
 					email: user?.email || '',
 					token: data.access_token,
 				})
-				redirect('/')
+				router.push('/')
 			}
 		} catch (error: any) {
 			console.log(error.message)
-			// redirect('/signup')
 		}
 	}
 	return (
