@@ -3,11 +3,13 @@ from flask_login import login_required, current_user
 from .models import Blog, User
 from . import db
 from flask_jwt_extended import jwt_required
+from .limiter_setup import limiter
 
 views = Blueprint('views', __name__)
 
 
 @views.route('/', methods=['GET'])
+@limiter.limit("20 per minute")
 def home():
     blogs = Blog.query.all()
     blogs_list = [blog.to_dict() for blog in blogs]
@@ -16,6 +18,7 @@ def home():
 
 @views.route('/create_blog', methods=['POST'])
 @jwt_required()
+@limiter.limit("5 per minute")
 def create_blog():
     blog = request.json.get('data', None)
     blog_title = request.json.get('title', None)
@@ -45,6 +48,7 @@ def create_blog():
 
 
 @views.route('/<int:blog_id>', methods=['GET'])
+@limiter.limit("50 per minute")
 def get_blog_by_id(blog_id):
     blog = Blog.query.get(blog_id)
 
@@ -56,6 +60,7 @@ def get_blog_by_id(blog_id):
 
 @views.route('/delete_blog', methods=['POST'])
 @jwt_required()
+@limiter.limit("10 per minute")
 def delete_blog():
     if request.method == 'POST':
         blog_id = request.json.get('blog_id')

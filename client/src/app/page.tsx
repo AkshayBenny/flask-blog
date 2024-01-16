@@ -12,6 +12,8 @@ interface BlogPost {
 	user_id: number
 }
 
+
+
 export default function Home() {
 	const [blogs, setBlogs] = useState<BlogPost[]>([])
 
