@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from .models import Blog, User
 from . import db
 from flask_jwt_extended import jwt_required
+from .limiter_setup import limiter
 
 views = Blueprint('views', __name__)
 
@@ -16,6 +17,7 @@ def home():
 
 @views.route('/create_blog', methods=['POST'])
 @jwt_required()
+@limiter.limit("10 per minute")
 def create_blog():
     blog = request.json.get('data', None)
     blog_title = request.json.get('title', None)
