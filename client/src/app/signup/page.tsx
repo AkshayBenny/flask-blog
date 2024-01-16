@@ -14,6 +14,12 @@ interface UserData {
 	password2: string
 }
 
+const fetchCsrfToken = async () => {
+	const response = await fetch('http://127.0.0.1:5000/auth/get-csrf-token')
+	const data = await response.json()
+	return data.csrf_token
+}
+
 export default function SignUpPage() {
 	const [user, setUser] = useState<UserData | null>(null)
 	const [recoilUser, setRecoilUser] = useRecoilState(userAtom)
@@ -24,7 +30,7 @@ export default function SignUpPage() {
 		e.preventDefault()
 		if (user?.password1 !== user?.password2)
 			setErrorMessage('Passwords do not match')
-
+		const csrfToken = localStorage.getItem('csrfToken')
 		try {
 			const { data } = await axios.post(
 				'http://127.0.0.1:5000/auth/sign_up',
@@ -38,6 +44,7 @@ export default function SignUpPage() {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
+						'X-CSRFToken': csrfToken,
 					},
 				}
 			)
@@ -53,6 +60,13 @@ export default function SignUpPage() {
 			}
 		} catch (error: any) {
 			console.log(error.message)
+		}
+
+		try {
+			const csrfToken = await fetchCsrfToken()
+			localStorage.setItem('csrfToken', csrfToken)
+		} catch (error: any) {
+			console.log('Error retrieving CSRF token:' + error.message)
 		}
 	}
 	return (

@@ -12,11 +12,13 @@ export default function Navbar() {
 	console.log(recoilUser)
 
 	const logoutHandler = async () => {
+		const csrfToken = localStorage.getItem('csrfToken')
 		try {
 			await axios.post('http://127.0.0.1:5000/auth/logout', {
 				headers: {
 					'Content-Type': 'application/json',
 					Accept: 'application/json',
+					'X-CSRFToken': csrfToken,
 				},
 			})
 			setRecoilUser({ name: '', email: '', token: '' })

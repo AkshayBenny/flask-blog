@@ -1,3 +1,5 @@
+from flask import jsonify
+from flask_wtf.csrf import generate_csrf
 from flask import Blueprint, request, flash
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -11,6 +13,11 @@ from .limiter_setup import limiter
 
 
 auth = Blueprint('auth', __name__)
+
+
+@auth.route('/get-csrf-token', methods=['GET'])
+def get_csrf():
+    return jsonify({'csrf_token': generate_csrf()})
 
 
 @auth.after_request

@@ -19,3 +19,4 @@ typing-extensions
 werkzeug           
 zipp               
 Flask-Limiter
+Flask-WTF

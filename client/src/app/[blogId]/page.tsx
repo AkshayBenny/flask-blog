@@ -20,6 +20,7 @@ export default function BlogPage({ params }: { params: { blogId: string } }) {
 	const deleteHandler = async () => {
 		const userEmail = localStorage.getItem('email')
 		const token = localStorage.getItem('token')
+		const csrfToken = localStorage.getItem('csrfToken')
 		try {
 			await axios.post(
 				'http://127.0.0.1:5000/delete_blog',
@@ -32,6 +33,7 @@ export default function BlogPage({ params }: { params: { blogId: string } }) {
 						Authorization: `Bearer ${token}`,
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
+						'X-CSRFToken': csrfToken,
 					},
 				}
 			)

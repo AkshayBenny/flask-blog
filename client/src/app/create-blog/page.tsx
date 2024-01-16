@@ -28,6 +28,7 @@ export default function CreateBlogPage() {
 		}))
 		const userEmail = localStorage.getItem('email')
 		if (!userEmail) return console.log('No user email found.')
+		const csrfToken = localStorage.getItem('csrfToken')
 		try {
 			const { data } = await axios.post(
 				'http://127.0.0.1:5000/create_blog',
@@ -41,6 +42,7 @@ export default function CreateBlogPage() {
 						Authorization: `Bearer ${recoilUser.token}`,
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
+						'X-CSRFToken': csrfToken,
 					},
 				}
 			)
