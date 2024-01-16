@@ -1,6 +1,7 @@
 'use client'
 
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import DeleteBin7LineIcon from 'remixicon-react/DeleteBin7LineIcon'
 
@@ -14,6 +15,7 @@ interface BlogPost {
 
 export default function BlogPage({ params }: { params: { blogId: string } }) {
 	const [blog, setBlog] = useState<BlogPost | null>(null)
+	const router = useRouter()
 
 	const deleteHandler = async () => {
 		const userEmail = localStorage.getItem('email')
@@ -33,6 +35,7 @@ export default function BlogPage({ params }: { params: { blogId: string } }) {
 					},
 				}
 			)
+			router.push('/')
 		} catch (error: any) {
 			console.log(error.message)
 		}

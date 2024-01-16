@@ -1,14 +1,20 @@
 'use client'
 
-import { userAtom } from '@/state/recoil'
 import axios from 'axios'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useRecoilState } from 'recoil'
+
+interface BlogPost {
+	title: string
+	data: string
+	date: string
+	id: number
+	user_id: number
+}
 
 export default function Home() {
-	const [blogs, setBlogs] = useState([])
-	const [recoilUser, setRecoilUser] = useRecoilState(userAtom)
+	const [blogs, setBlogs] = useState<BlogPost[]>([])
+
 	useEffect(() => {
 		const fetchBlogs = async () => {
 			try {
@@ -20,7 +26,6 @@ export default function Home() {
 		}
 		fetchBlogs()
 	}, [])
-	console.log(recoilUser)
 	return (
 		<main className='space-y-[24px] m-12'>
 			<h2 className='font-semibold text-xl'>Blogs</h2>
