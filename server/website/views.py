@@ -2,7 +2,6 @@ from flask import Blueprint, request, flash, jsonify
 from flask_login import login_required, current_user
 from .models import Blog, User
 from . import db
-import json
 from flask_jwt_extended import jwt_required
 
 views = Blueprint('views', __name__)
