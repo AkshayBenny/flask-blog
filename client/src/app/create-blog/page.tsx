@@ -29,6 +29,7 @@ export default function CreateBlogPage() {
 		const userEmail = localStorage.getItem('email')
 		if (!userEmail) return console.log('No user email found.')
 		const csrfToken = localStorage.getItem('csrfToken')
+		console.log(csrfToken)
 		try {
 			const { data } = await axios.post(
 				'http://127.0.0.1:5000/create_blog',

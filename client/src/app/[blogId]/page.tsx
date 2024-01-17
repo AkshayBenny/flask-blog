@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import DeleteBin7LineIcon from 'remixicon-react/DeleteBin7LineIcon'
+import Comments from '../components/Comments'
 
 interface BlogPost {
 	title: string
@@ -80,7 +81,7 @@ export default function BlogPage({ params }: { params: { blogId: string } }) {
 				</div>
 			</div>
 			<p className='text-sm leading-6'>{blog?.data}</p>
-			
+			<Comments />
 		</main>
 	)
 }
