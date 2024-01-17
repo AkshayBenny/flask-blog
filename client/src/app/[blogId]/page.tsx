@@ -80,6 +80,7 @@ export default function BlogPage({ params }: { params: { blogId: string } }) {
 				</div>
 			</div>
 			<p className='text-sm leading-6'>{blog?.data}</p>
+			
 		</main>
 	)
 }
