@@ -98,13 +98,11 @@ export default function CreateBlogPage() {
 					}
 				/>
 			</div>
-			<div>
-				<button
-					type='submit'
-					className='btn btn-block btn-primary'>
-					Create
-				</button>
-			</div>
+			<button
+				type='submit'
+				className='btn btn-block btn-primary'>
+				Create
+			</button>
 		</form>
 	)
 }
