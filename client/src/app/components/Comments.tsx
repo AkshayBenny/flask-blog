@@ -13,31 +13,8 @@ interface Comment {
 	user_name: string
 }
 
-const comments = [
-	{
-		id: 1,
-		comment: 'This is an insightful blog post. Thanks for sharing!',
-		date: '12 May 2014',
-		user_id: '101',
-		user_name: 'John Doe',
-	},
-	{
-		id: 2,
-		comment: 'Really enjoyed reading this. Looking forward to more posts.',
-		date: '12 May 2014',
-		user_id: '102',
-		user_name: 'Jane Smith',
-	},
-	{
-		id: 3,
-		comment: 'Great post! I learned a lot from this.',
-		date: '12 May 2014',
-		user_id: '103',
-		user_name: 'Alice Johnson',
-	},
-]
 export default function Comments() {
-	const [commentsData, setCommentsData] = useState<Array<Comment>>(comments)
+	const [commentsData, setCommentsData] = useState<Array<Comment> | any>()
 	const [commentData, setCommentData] = useState<string | null>(null)
 	const [recoilUser, setRecoilUser] = useRecoilState(userAtom)
 
