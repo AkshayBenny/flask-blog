@@ -1,12 +1,15 @@
 import ThumbUpLineIcon from 'remixicon-react/ThumbUpLineIcon'
 import ThumbDownLineIcon from 'remixicon-react/ThumbDownLineIcon'
 import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { useRecoilState } from 'recoil'
+import { userAtom } from '@/state/recoil'
 
 interface Comment {
 	id: number
 	comment: string
 	date: string
-	user_id: number
+	user_id: string | null
 	user_name: string
 }
 
@@ -15,45 +18,71 @@ const comments = [
 		id: 1,
 		comment: 'This is an insightful blog post. Thanks for sharing!',
 		date: '12 May 2014',
-		user_id: 101,
+		user_id: '101',
 		user_name: 'John Doe',
 	},
 	{
 		id: 2,
 		comment: 'Really enjoyed reading this. Looking forward to more posts.',
 		date: '12 May 2014',
-		user_id: 102,
+		user_id: '102',
 		user_name: 'Jane Smith',
 	},
 	{
 		id: 3,
 		comment: 'Great post! I learned a lot from this.',
 		date: '12 May 2014',
-		user_id: 103,
+		user_id: '103',
 		user_name: 'Alice Johnson',
 	},
 ]
 export default function Comments() {
 	const [commentsData, setCommentsData] = useState<Array<Comment>>(comments)
 	const [commentData, setCommentData] = useState<string | null>(null)
+	const [recoilUser, setRecoilUser] = useRecoilState(userAtom)
+
 	const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
+		const csrfToken = localStorage.getItem('csrfToken')
+		const token = localStorage.getItem('token') || recoilUser.token
+		const userId = localStorage.getItem('userId')
 		// Create a new date object
 		const date = new Date()
 
 		// Format the date
 		const formattedDate = date.toLocaleDateString('en-US', {
-			weekday: 'short', // Short name of the day of the week.
-			year: 'numeric', // Numeric year.
-			month: 'short', // Short name of the month.
-			day: 'numeric', // Numeric day of the month.
+			weekday: 'short',
+			year: 'numeric',
+			month: 'short',
+			day: 'numeric',
 		})
 		const newComment: Comment = {
 			id: Number(Math.random()),
 			comment: commentData || '',
 			date: String(formattedDate),
-			user_id: Number(Math.random()),
+			user_id: userId,
 			user_name: 'John Doe',
+		}
+		try {
+			console.log(commentData, token)
+			await axios.post(
+				'http://127.0.0.1:5000/create_comment',
+				{
+					comment: commentData,
+					user_id: Number(Math.random()),
+					blog_id: Number(Math.random()),
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${recoilUser.token || token}`,
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+						'X-CSRFToken': csrfToken,
+					},
+				}
+			)
+		} catch (error: any) {
+			console.log(error.message)
 		}
 		setCommentsData([...commentsData, newComment])
 	}
