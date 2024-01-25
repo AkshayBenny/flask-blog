@@ -1,3 +1,5 @@
+'user client'
+
 import ThumbUpLineIcon from 'remixicon-react/ThumbUpLineIcon'
 import ThumbDownLineIcon from 'remixicon-react/ThumbDownLineIcon'
 import { useEffect, useState } from 'react'
@@ -64,7 +66,7 @@ export default function Comments() {
 		setCommentsData([...commentsData, newComment])
 	}
 
-	useEffect(() => {}, [commentsData.length])
+	// useEffect(() => {}, [commentsData.length])
 
 	return (
 		<div className='border-t mt-12 py-12'>
@@ -83,7 +85,7 @@ export default function Comments() {
 				</button>
 			</form>
 			<div>
-				{commentsData.map((comment: Comment) => {
+				{commentsData?.map((comment: Comment) => {
 					return (
 						<div
 							key={comment.id}
