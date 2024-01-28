@@ -1,6 +1,7 @@
 'use client'
 
 import { userAtom } from '@/state/recoil'
+import { fetchCsrfToken } from '@/utils/fetchCSRFToken'
 import axios from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -12,12 +13,6 @@ interface UserData {
 	email: string
 	password1: string
 	password2: string
-}
-
-const fetchCsrfToken = async () => {
-	const response = await fetch('http://127.0.0.1:5000/auth/get-csrf-token')
-	const data = await response.json()
-	return data.csrf_token
 }
 
 export default function SignUpPage() {
@@ -51,6 +46,10 @@ export default function SignUpPage() {
 			if (data && data.access_token) {
 				sessionStorage.setItem('token', `${data.access_token}`)
 				localStorage.setItem('token', `${data.access_token}`)
+				localStorage.setItem('email', `${user?.email || ''}`)
+				localStorage.setItem('userEmail', `${data.user_email}`)
+				localStorage.setItem('userName', `${data.name}`)
+				localStorage.setItem('userId', `${data.user_id}`)
 				setRecoilUser({
 					name: user?.name || '',
 					email: user?.email || '',
@@ -60,13 +59,6 @@ export default function SignUpPage() {
 			}
 		} catch (error: any) {
 			console.log(error.message)
-		}
-
-		try {
-			const csrfToken = await fetchCsrfToken()
-			localStorage.setItem('csrfToken', csrfToken)
-		} catch (error: any) {
-			console.log('Error retrieving CSRF token:' + error.message)
 		}
 	}
 	return (

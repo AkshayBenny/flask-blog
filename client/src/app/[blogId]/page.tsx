@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import DeleteBin7LineIcon from 'remixicon-react/DeleteBin7LineIcon'
+import Comments from '../components/Comments'
 
 interface BlogPost {
 	title: string
@@ -13,8 +14,17 @@ interface BlogPost {
 	user_id: number
 }
 
+interface Comment {
+	id: string
+	comment: string
+	user_id: string
+	blog_id: string
+	user_name: string
+}
+
 export default function BlogPage({ params }: { params: { blogId: string } }) {
 	const [blog, setBlog] = useState<BlogPost | null>(null)
+	const [comments, setComments] = useState<Array<Comment>>([])
 	const router = useRouter()
 
 	const deleteHandler = async () => {
@@ -49,8 +59,9 @@ export default function BlogPage({ params }: { params: { blogId: string } }) {
 				const { data } = await axios.get(
 					`http://127.0.0.1:5000/${params.blogId}`
 				)
-				setBlog(data.data)
-				console.log('blogData>>>', data.data)
+				setBlog(data.blog_data)
+				setComments(data.comments_data)
+				console.log('blogData>>>', data)
 			} catch (error: any) {
 				console.log(error.message)
 			}
@@ -80,6 +91,10 @@ export default function BlogPage({ params }: { params: { blogId: string } }) {
 				</div>
 			</div>
 			<p className='text-sm leading-6'>{blog?.data}</p>
+			<Comments
+				blogId={params.blogId}
+				comments={comments}
+			/>
 		</main>
 	)
 }

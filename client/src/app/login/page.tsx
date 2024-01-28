@@ -39,6 +39,9 @@ export default function LoginPage() {
 				localStorage.setItem('token', `${data.access_token}`)
 				sessionStorage.setItem('email', `${user?.email || ''}`)
 				localStorage.setItem('email', `${user?.email || ''}`)
+				localStorage.setItem('userEmail', `${data.user_email}`)
+				localStorage.setItem('userName', `${data.name}`)
+				localStorage.setItem('userId', `${data.id}`)
 				setRecoilUser({
 					name: '',
 					email: user?.email || '',

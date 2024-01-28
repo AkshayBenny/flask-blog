@@ -22,6 +22,7 @@ export default function Navbar() {
 				},
 			})
 			setRecoilUser({ name: '', email: '', token: '' })
+			localStorage.removeItem('token')
 			redirect('/')
 		} catch (error: any) {
 			console.log(error.message)

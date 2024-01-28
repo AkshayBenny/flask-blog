@@ -29,8 +29,9 @@ export default function CreateBlogPage() {
 		const userEmail = localStorage.getItem('email')
 		if (!userEmail) return console.log('No user email found.')
 		const csrfToken = localStorage.getItem('csrfToken')
+		console.log(csrfToken)
 		try {
-			const { data } = await axios.post(
+			await axios.post(
 				'http://127.0.0.1:5000/create_blog',
 				{
 					data: blogData?.data || '',
@@ -97,13 +98,11 @@ export default function CreateBlogPage() {
 					}
 				/>
 			</div>
-			<div>
-				<button
-					type='submit'
-					className='btn btn-block btn-primary'>
-					Create
-				</button>
-			</div>
+			<button
+				type='submit'
+				className='btn btn-block btn-primary'>
+				Create
+			</button>
 		</form>
 	)
 }

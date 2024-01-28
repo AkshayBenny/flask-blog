@@ -1,5 +1,6 @@
 'use client'
 
+import { fetchCsrfToken } from '@/utils/fetchCSRFToken'
 import axios from 'axios'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -11,8 +12,6 @@ interface BlogPost {
 	id: number
 	user_id: number
 }
-
-
 
 export default function Home() {
 	const [blogs, setBlogs] = useState<BlogPost[]>([])
