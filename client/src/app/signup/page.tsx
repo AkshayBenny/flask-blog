@@ -46,6 +46,10 @@ export default function SignUpPage() {
 			if (data && data.access_token) {
 				sessionStorage.setItem('token', `${data.access_token}`)
 				localStorage.setItem('token', `${data.access_token}`)
+				localStorage.setItem('email', `${user?.email || ''}`)
+				localStorage.setItem('userEmail', `${data.user_email}`)
+				localStorage.setItem('userName', `${data.name}`)
+				localStorage.setItem('userId', `${data.user_id}`)
 				setRecoilUser({
 					name: user?.name || '',
 					email: user?.email || '',
@@ -56,8 +60,6 @@ export default function SignUpPage() {
 		} catch (error: any) {
 			console.log(error.message)
 		}
-
-		
 	}
 	return (
 		<div className='relative flex flex-col justify-center h-screen overflow-hidden'>

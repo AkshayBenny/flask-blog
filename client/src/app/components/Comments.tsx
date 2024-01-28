@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useRecoilState } from 'recoil'
 import { userAtom } from '@/state/recoil'
+import { useRouter } from 'next/navigation'
 
 interface Comment {
 	id: number
@@ -15,8 +16,14 @@ interface Comment {
 	user_name: string
 }
 
-export default function Comments() {
-	const [commentsData, setCommentsData] = useState<Array<Comment> | any>()
+export default function Comments({
+	blogId,
+	comments = [],
+}: {
+	blogId: string
+	comments: any[]
+}) {
+	const [commentsData, setCommentsData] = useState<any>(comments)
 	const [commentData, setCommentData] = useState<string | null>(null)
 	const [recoilUser, setRecoilUser] = useRecoilState(userAtom)
 
@@ -25,6 +32,7 @@ export default function Comments() {
 		const csrfToken = localStorage.getItem('csrfToken')
 		const token = localStorage.getItem('token') || recoilUser.token
 		const userId = localStorage.getItem('userId')
+		const userName = localStorage.getItem('userName')
 		// Create a new date object
 		const date = new Date()
 
@@ -40,16 +48,17 @@ export default function Comments() {
 			comment: commentData || '',
 			date: String(formattedDate),
 			user_id: userId,
-			user_name: 'John Doe',
+			user_name: userName || 'John Doe',
 		}
+
 		try {
 			console.log(commentData, token)
 			await axios.post(
 				'http://127.0.0.1:5000/create_comment',
 				{
 					comment: commentData,
-					user_id: Number(Math.random()),
-					blog_id: Number(Math.random()),
+					user_id: userId,
+					blog_id: blogId,
 				},
 				{
 					headers: {
@@ -60,13 +69,11 @@ export default function Comments() {
 					},
 				}
 			)
+			setCommentsData([...commentsData, newComment])
 		} catch (error: any) {
 			console.log(error.message)
 		}
-		setCommentsData([...commentsData, newComment])
 	}
-
-	// useEffect(() => {}, [commentsData.length])
 
 	return (
 		<div className='border-t mt-12 py-12'>
